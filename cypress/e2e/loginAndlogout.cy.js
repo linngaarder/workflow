@@ -34,4 +34,17 @@ describe("Login validation", () => {
 
     cy.url().should("include", "/index.html");
   });
+
+  it("should log out user", () => {
+    cy.get("button[data-bs-target='#loginModal']:visible").first().click();
+    cy.wait(1000);
+    cy.get("input[id='loginEmail']").type("test89@stud.noroff.no");
+    cy.get("input[id='loginPassword']").type("testtest1234");
+
+    cy.get('form#loginForm button[type="submit"]').click();
+
+    cy.url().should("include", "/index.html");
+
+    cy.get(`header [data-auth="logout"]`).contains("Logout").click();
+  });
 });
