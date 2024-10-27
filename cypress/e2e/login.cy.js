@@ -9,6 +9,21 @@ describe("Login validation", () => {
     cy.get('button[type="submit"]:visible').should("exist");
   });
 
+  it("should show message if login is invalid", () => {
+    cy.get("button[data-bs-target='#loginModal']:visible").first().click();
+    cy.wait(1000);
+    cy.get("input[id='loginEmail']").type("test89@example.no");
+    cy.get("input[id='loginPassword']").type("testtest1234");
+
+    cy.get('form#loginForm button[type="submit"]').click();
+    cy.wait(1000);
+    cy.on("window:alert", (text) => {
+      expect(text).to.contain(
+        "Please match the requested format. Only Noroff student or teacher emails are valid.",
+      );
+    });
+  });
+
   it("should log in user and access dashboard", () => {
     cy.get("button[data-bs-target='#loginModal']:visible").first().click();
     cy.wait(1000);
